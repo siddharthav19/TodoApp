@@ -1,35 +1,33 @@
 /* adding a new to do  */
 let todosList
-if(localStorage.getItem('todo')===null)
-{
+if (localStorage.getItem('todo') === null) {
 
-     todosList = [];
+    todosList = [];
 
 }
-else{
+else {
 
-     todosList = JSON.parse(localStorage.getItem('todo'));
+    todosList = JSON.parse(localStorage.getItem('todo'));
 }
 
 const ulParent = document.querySelector('ul');
 const addTodo = document.querySelector('.add');
 const searchEngine = document.querySelector('.search input');
 
-localStorage.setItem('todo',JSON.stringify(todosList));
+localStorage.setItem('todo', JSON.stringify(todosList));
 
-document.querySelector('.search').addEventListener('submit',(e)=>{
+document.querySelector('.search').addEventListener('submit', (e) => {
     e.preventDefault();
 });
 
 const list = ulParent.children;
-const relFn = ()=>{
+const relFn = () => {
 
-if(JSON.parse(localStorage.getItem('todo')).length !== 0)
-{
-    ulParent.innerHTML = '';
-    JSON.parse(localStorage.getItem('todo')).forEach((el)=>{
-       
-        ulParent.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">
+    if (JSON.parse(localStorage.getItem('todo')).length !== 0) {
+        ulParent.innerHTML = '';
+        JSON.parse(localStorage.getItem('todo')).forEach((el) => {
+
+            ulParent.innerHTML += `<li class="list-group-item d-flex justify-content-between align-items-center">
      <span>${el}</span>
      <i class="far fa-trash-alt delete"></i>`;
 
@@ -37,40 +35,40 @@ if(JSON.parse(localStorage.getItem('todo')).length !== 0)
 
 
 
-    });
+        });
 
 
-}
+    }
 }
 relFn();
 
 
-const addToList = (listElement) =>{
+const addToList = (listElement) => {
 
     todosList.push(listElement)
-    localStorage.setItem('todo',JSON.stringify(todosList));
+    localStorage.setItem('todo', JSON.stringify(todosList));
 }
-const removeFromList = (val) =>{
+const removeFromList = (val) => {
 
-    let inx =   JSON.parse(localStorage.getItem('todo')).indexOf(val);
+    let inx = JSON.parse(localStorage.getItem('todo')).indexOf(val);
 
     let lis = JSON.parse(localStorage.getItem('todo'));
 
-    lis.splice(inx,1);
-  
+    lis.splice(inx, 1);
 
-    localStorage.setItem('todo',JSON.stringify(lis));
+
+    localStorage.setItem('todo', JSON.stringify(lis));
 
 }
 
-const generateTemplate = (todo)=>{
+const generateTemplate = (todo) => {
 
     const html = `<li class="list-group-item d-flex justify-content-between align-items-center">
      <span>${todo}</span>
      <i class="far fa-trash-alt delete"></i>
      `;
 
-    ulParent.innerHTML+=html;
+    ulParent.innerHTML += html;
     addToList(todo);
 
 
@@ -79,17 +77,16 @@ const generateTemplate = (todo)=>{
 
 
 
-addTodo.addEventListener('submit',(e)=>{
+addTodo.addEventListener('submit', (e) => {
 
     e.preventDefault();
 
-   
+
     const input = addTodo.add.value.trim();
 
-    if(input.length)
-    {
+    if (input.length) {
         generateTemplate(input);
-        
+
     }
 
     addTodo.reset();
@@ -101,11 +98,10 @@ addTodo.addEventListener('submit',(e)=>{
 
 
 
-ulParent.addEventListener('click',(e)=>{
-   
-    if(e.target.classList.contains('delete')) 
-    {
-       
+ulParent.addEventListener('click', (e) => {
+
+    if (e.target.classList.contains('delete')) {
+
         removeFromList(e.target.previousElementSibling.textContent);
         e.target.parentElement.remove();
 
@@ -117,31 +113,31 @@ ulParent.addEventListener('click',(e)=>{
 
 
 
-const Filterup = (term)=>{
+const Filterup = (term) => {
 
 
 
-   
-    Array.from(list).filter((val)=>{
+
+    Array.from(list).filter((val) => {
 
         return !(val.textContent.toLowerCase().includes(term));
-    }).forEach((through)=>{
+    }).forEach((through) => {
         through.classList.add('searchFilter')
     });
 
 
-    Array.from(list).filter((val)=>{
+    Array.from(list).filter((val) => {
 
         return (val.textContent.toLowerCase().includes(term));
-    }).forEach((through)=>{
+    }).forEach((through) => {
         through.classList.remove('searchFilter')
     });
 };
 
 
-searchEngine.addEventListener('keyup',(e)=>{
+searchEngine.addEventListener('keyup', (e) => {
 
     const inputVal = searchEngine.value.toLowerCase().trim();
-   
+
     Filterup(inputVal);
 });
